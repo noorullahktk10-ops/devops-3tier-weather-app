@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>DevOps Weather Dashboard</title>
+<style>
+body{font-family:Arial;background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;height:100vh}
+.card{background:#1e293b;padding:40px;border-radius:15px;text-align:center}
+input{padding:10px;border-radius:8px;border:none;width:200px}
+button{padding:10px 15px;border-radius:8px;border:none;background:#38bdf8;cursor:pointer;margin-left:10px}
+#result{margin-top:20px;font-size:18px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>DevOps Weather Dashboard</h1>
+<p>Dockerized 3-Tier App by Noor Ullah</p>
+<input id="city" placeholder="Enter city e.g. peshawar">
+<button onclick="getWeather()">Get Weather</button>
+<div id="result"></div>
+</div>
+<script>
+async function getWeather(){
+  const city = document.getElementById('city').value;
+  if(!city){ alert('Enter city name'); return; }
+  try{
+    const res = await fetch('http://localhost:5000/api/weather/' + city);
+    const data = await res.json();
+    document.getElementById('result').innerHTML = `<b>${data.city}</b> - ${data.temp} - ${data.status}`;
+  }catch(e){
+    document.getElementById('result').innerHTML = 'Error: Backend not reachable. Check Docker.';
+  }
+}
+</script>
+</body>
+</html>

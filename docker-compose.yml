@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    networks:
+      - devops-net
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - devops-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    networks:
+      - devops-net
+    volumes:
+      - redis-data:/data
+
+networks:
+  devops-net:
+    driver: bridge
+
+volumes:
+  redis-data:
